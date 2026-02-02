@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine Surprise ❤️</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+height:100vh;background:red;overflow:hidden;
+display:flex;justify-content:center;align-items:center;
+font-family:Arial,sans-serif;color:white;text-align:center}
+.container{z-index:2}
+h1{font-size:2.2rem;margin-bottom:40px;padding:0 10px}
+button{
+padding:15px 35px;font-size:20px;border:none;
+border-radius:30px;cursor:pointer;margin:10px;
+transition:all .3s ease}
+#yes{background:pink;color:red}
+#no{background:white;color:red}
+#final{display:none;font-size:2.5rem;padding:0 15px}
+.heart{
+position:absolute;bottom:-10px;font-size:20px;
+animation:float 6s linear infinite;opacity:.8}
+@keyframes float{
+0%{transform:translateY(0) scale(1);opacity:1}
+100%{transform:translateY(-100vh) scale(1.5);opacity:0}}
+.burst-heart{
+position:absolute;font-size:30px;
+animation:burst 1.2s ease-out forwards;
+pointer-events:none}
+@keyframes burst{
+0%{transform:scale(.2);opacity:1}
+100%{
+transform:scale(1.5) translate(var(--x),var(--y));
+opacity:0}}
+</style>
+</head>
+<body>
+<div class="container">
+<h1 id="phrase">Will you be my Valentine? ❤️</h1>
+<button id="yes">Yes 💖</button>
+<button id="no">No 😒</button>
+<h1 id="final">I love you my forever Valentine ❤😘</h1>
+</div>
+
+<audio id="song">
+<source src="a_thousand_years.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const yesBtn=document.getElementById("yes");
+const noBtn=document.getElementById("no");
+const phrase=document.getElementById("phrase");
+const finalText=document.getElementById("final");
+const song=document.getElementById("song");
+
+let scale=1,index=0;
+const noTexts=[
+"Are you sure, Bubu 😒",
+"Think again, Babyyyyyyyy 😏",
+"Haha try me again, jaan kuchu puchu 🤭",
+"Not gonna happen 😌",
+"At last… you know you want to ❤"
+];
+
+noBtn.onclick=()=>{
+if(scale>.5){scale-=.1;noBtn.style.transform=`scale(${scale})`}
+else{
+noBtn.style.position="absolute";
+noBtn.style.left=Math.random()*(innerWidth-100)+"px";
+noBtn.style.top=Math.random()*(innerHeight-100)+"px"}
+phrase.innerText=noTexts[index];
+index=(index+1)%noTexts.length};
+
+yesBtn.onclick=()=>{
+yesBtn.style.display=noBtn.style.display="none";
+phrase.style.display="none";
+navigator.vibrate&&navigator.vibrate([300,150,300,150,500]);
+song.currentTime=53;song.play();
+setTimeout(()=>song.pause(),28000);
+finalText.style.display="block";
+for(let i=0;i<40;i++){
+const h=document.createElement("div");
+h.className="burst-heart";h.innerHTML="❤️";
+h.style.left="50%";h.style.top="50%";
+h.style.setProperty("--x",(Math.random()*400-200)+"px");
+h.style.setProperty("--y",(Math.random()*400-200)+"px");
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),1200)}
+};
+
+setInterval(()=>{
+const h=document.createElement("div");
+h.className="heart";h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+h.style.animationDuration=(Math.random()*3+4)+"s";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),7000)},300);
+</script>
+</body>
+</html>
